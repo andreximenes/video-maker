@@ -1,0 +1,15 @@
+{
+  "name": "scrapping-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "André Luiz Ximenes",
+  "license": "MIT",
+  "dependencies": {
+    "algorithmia": "^0.3.10",
+    "readline-sync": "^1.4.10"
+  }
+}
