@@ -12,7 +12,10 @@ async function robot(content) {
     async function fetchContentFromWikipedia(content) {
         const response = await Algorithmia.client(apiKey)
             .algo("web/WikipediaParser/0.1.2?timeout=300")
-            .pipe(content.searchTerm);
+            .pipe({
+                "articleName": content.searchTerm,
+                "lang": content.lang
+              });
         
         const originalContent = response.get();
         content.sourceContentOriginal = originalContent.content;
