@@ -1,10 +1,13 @@
 const Algorithmia = require('algorithmia');
 const {apiKey} = require('../credentials/algorithmia.json');
+const sbd = require('sbd');
 
 async function robot(content) {
     await fetchContentFromWikipedia(content);
     sanitizeContent(content);
-    //breakContentIntoSentences(content);
+    breakContentIntoSentences(content);
+
+    console.log(content);
 
     async function fetchContentFromWikipedia(content) {
         const response = await Algorithmia.client(apiKey)
@@ -18,7 +21,7 @@ async function robot(content) {
     function sanitizeContent(content) {
         const withoutBlankLinesAndMarkdowns = removeBlankLinesAndMarkdowns(content.sourceContentOriginal);
         const withoutDatesInParentheses = removeDatesInParentheses(withoutBlankLinesAndMarkdowns);
-        console.log(withoutDatesInParentheses);
+        content.sourceContentSanitized = withoutDatesInParentheses;
 
         function removeBlankLinesAndMarkdowns(text) {
             const allLines = text.split('\n');
@@ -36,7 +39,20 @@ async function robot(content) {
         }
     }
 
-   
+    function breakContentIntoSentences(content){
+        content.sentences = [];
+        const sentences = sbd.sentences(content.sourceContentSanitized);
+        sentences.forEach((sentence) => {
+            content.sentences.push(
+                {
+                    text: sentence,
+                    keywords: [],
+                    images: []
+                }
+            );
+        })
+    }
+
 
 }
 module.exports = robot;
